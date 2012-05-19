@@ -5,9 +5,8 @@ require 'daemonizer'
 
 class MyDaemon < Daemonizer::Daemon
 
-
   def before_perform
-    @finish_time = Time.at(Time.now.to_i + 60 * 1)
+    @finish_time = Time.at(Time.now.to_i + rand(1..60))
   end
 
   def perform
@@ -20,7 +19,10 @@ end
 
 
 supervisor = Daemonizer::Supervisor.new
-daemon = MyDaemon.new
 
-supervisor.add_daemon daemon
+3.times do |n|
+  daemon = MyDaemon.new "mydaemon_#{n}"
+  supervisor.add_daemon daemon
+end
+
 supervisor.run
