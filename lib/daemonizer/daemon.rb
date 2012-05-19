@@ -4,10 +4,10 @@ class Daemonizer::Daemon
   DETACH = false
   CYCLES = true
 
-  attr_reader :name
+  attr_reader :name, :pid
 
   def initialize(_name = nil, options = {})
-    @name = _name || self.class.to_s.downcase
+    @name = _name || self.class.to_s.downcase.gsub('::','_')
     @pid_file = Daemonizer::PidFile.new(@name)
     @pid = 0
   end
@@ -35,6 +35,10 @@ class Daemonizer::Daemon
     finalize
   end
 
+  def started?
+    @pid_file.locked?
+  end
+
   private
 
     def performed
@@ -50,9 +54,6 @@ class Daemonizer::Daemon
       exit!(1)
     end
 
-    def started?
-      @pid_file.locked?
-    end
 
 
     def create_pid_file

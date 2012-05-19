@@ -11,7 +11,11 @@ class Daemonizer::PidFile
 
   def locked?
     return false unless File.exist?(path)
-    pfile = get_file('r')
+    begin
+      pfile = get_file('r')
+    rescue Errno::ENOENT
+      return false
+    end
 
     flock_result = pfile.flock File::LOCK_EX|File::LOCK_NB
     result = flock_result != 0

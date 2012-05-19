@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
-#bundle exec test/create_daemon.rb
+#bundle exec test/create_supervisor.rb
 
 require 'daemonizer'
 
 class MyDaemon < Daemonizer::Daemon
+
 
   def before_perform
     @finish_time = Time.at(Time.now.to_i + 60 * 1)
@@ -17,4 +18,9 @@ class MyDaemon < Daemonizer::Daemon
 
 end
 
-MyDaemon.new.run
+
+supervisor = Daemonizer::Supervisor.new
+daemon = MyDaemon.new
+
+supervisor.add_daemon daemon
+supervisor.run
