@@ -14,7 +14,7 @@ class Daemonizer::PidFile
     pfile = get_file('r')
 
     flock_result = pfile.flock File::LOCK_EX|File::LOCK_NB
-    result = flock_result == 0
+    result = flock_result != 0
 
     pfile.flock File::LOCK_UN unless result
     pfile.close
