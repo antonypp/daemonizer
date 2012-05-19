@@ -2,61 +2,79 @@ class Daemonizer::Daemon
 
   TMP_PATH = '/tmp/'
   LOG_PATH = '/tmp/'
+  DETACH = false
+  CYCLES = true
 
-  def initialize
-    @name = self.class.to_s.downcase
-    @pidfile = nil
+  attr_reader :name
+
+  def initialize(_name = nil)
+    @name = _name || self.class.to_s.downcase
+    @pid_file = Daemonizer::PidFile.new(@name)
     @pid = 0
   end
 
   def run(&block)
+    exit!(1) if started?
     @pid = fork do
-      create_pidfile
+      @pid = Process.pid
+
+      create_pid_file
       init_std
 
-      perform
+      performed
+
+      finalize
+    end
+    Process.detach(@pid) if DETACH
+  end
+
+  def before_perform
+  # callback before perform
+  end
+
+  def stop
+    finalize
+  end
+
+  private
+
+    def performed
+      before_perform
+      while(CYCLES)
+        trap_signals
+        perform
+      end
+    end
+
+    def finalize
+      delete_pid_file
       exit!(1)
     end
-    Process.detach(@pid)
 
-  end
+    def started?
+      @pid_file.locked?
+    end
 
 
-  def started?
-    file = pidfile('r')
-    flock_result = file.flock File::LOCK_EX|File::LOCK_NB
-    case flock_result
-      when 0; begin
-        file.flock File::LOCK_UN
-        file.close
-        return false
-      end
-      when false; begin
-        file.close
-        return true
+    def create_pid_file
+      @pid_file.write_pid @pid
+      @pid_file.lock
+    end
+
+    def delete_pid_file
+      @pid_file.delete
+    end
+
+    def init_std
+      $stdout = File.new "#{LOG_PATH}#{@name}.log", 'w'
+      $stderr = File.new "#{LOG_PATH}#{@name}.error.log", 'w'
+    end
+
+    def trap_signals
+      Signal.trap "QUIT" do
+        p 'Daemon QUIT'
+        finalize
       end
     end
-  end
-
-  def pidfile(method = 'w')
-    File.new("#{TMP_PATH}#{@name}.pid", method)
-  end
-
-  def create_pidfile
-    @pidfile = pidfile
-    @pidfile.write Process.pid
-    @pidfile.flock File::LOCK_EX
-  end
-
-  def init_std
-    $stdout = File.new "#{LOG_PATH}#{@name}.log", 'w'
-    $stderr = File.new "#{LOG_PATH}#{@name}.error.log", 'w'
-  end
-
-  def trap_signals
-    Signal.trap "USR1" do
-      p Process.pid
-    end
-  end
 
 end
