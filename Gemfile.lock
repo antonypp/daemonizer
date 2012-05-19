@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    deamonizer (0.0.1)
+    daemonizer (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -11,4 +11,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  deamonizer!
+  daemonizer!

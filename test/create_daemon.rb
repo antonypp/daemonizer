@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'deamonizer'
+require 'daemonizer'
 
 class MyDeamon
 
