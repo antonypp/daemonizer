@@ -15,7 +15,7 @@ class Daemonizer::Supervisor < Daemonizer::Daemon
       unless daemon[:daemon].started?
         daemon[:daemon].run
         daemon[:started_at] = Time.now
-        p "#{daemon[:started_at]}: Start daemon #{daemon[:daemon].name}"
+        p "#{daemon[:started_at]}: Start daemon #{daemon[:daemon].name} #{daemon[:daemon].pid}"
       end
     end
 

@@ -17,7 +17,6 @@ class MyDaemon < Daemonizer::Daemon
 
 end
 
-
 supervisor = Daemonizer::Supervisor.new
 
 3.times do |n|

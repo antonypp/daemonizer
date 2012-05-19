@@ -1,7 +1,7 @@
 class Daemonizer::Daemon
 
   LOG_PATH = '/tmp/'
-  DETACH = false
+  DETACH = true
   CYCLES = true
 
   attr_reader :name, :pid
