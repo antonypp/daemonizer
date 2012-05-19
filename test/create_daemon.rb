@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 require 'daemonizer'
 
-class MyDaemon <
-
-  include Daemonizer::Daemon
+class MyDaemon < Daemonizer::Daemon
 
   def perform
     while(true)
