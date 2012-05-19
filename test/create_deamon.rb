@@ -7,7 +7,7 @@ class MyDeamon
 
   def perform
     while(true)
-      p Time.zone.now
+      p Time.now
       sleep 1
     end
   end
