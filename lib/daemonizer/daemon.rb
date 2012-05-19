@@ -1,13 +1,12 @@
 class Daemonizer::Daemon
 
-  TMP_PATH = '/tmp/'
   LOG_PATH = '/tmp/'
   DETACH = false
   CYCLES = true
 
   attr_reader :name
 
-  def initialize(_name = nil)
+  def initialize(_name = nil, options = {})
     @name = _name || self.class.to_s.downcase
     @pid_file = Daemonizer::PidFile.new(@name)
     @pid = 0
