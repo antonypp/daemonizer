@@ -1,4 +1,4 @@
-# Deamonizer
+# Daemonizer
 
 TODO: Write a gem description
 

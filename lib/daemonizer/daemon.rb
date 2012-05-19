@@ -1,5 +1,5 @@
-module Deamonizer
-  module Deamon
+module Daemonizer
+  module Daemon
 
     TMP_PATH = '/tmp/'
     LOG_PATH = '/tmp/'

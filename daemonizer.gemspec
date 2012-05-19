@@ -13,5 +13,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "daemonizer"
   gem.require_paths = ["lib"]
-  gem.version       = Deamonizer::VERSION
+  gem.version       = Daemonizer::VERSION
 end

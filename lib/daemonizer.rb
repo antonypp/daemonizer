@@ -1,6 +1,6 @@
 require "daemonizer/version"
 
-module Deamonizer
-  autoload "Deamon", "daemonizer/daemon"
+module Daemonizer
+  autoload "Daemon", "daemonizer/daemon"
 
 end
