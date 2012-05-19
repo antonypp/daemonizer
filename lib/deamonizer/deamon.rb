@@ -11,10 +11,10 @@ module Deamonizer
     end
 
     def run(&block)
-      create_pidfile
-      init_std
-
       @pid = fork do
+        create_pidfile
+        init_std
+
         perform
         exit!(1)
       end

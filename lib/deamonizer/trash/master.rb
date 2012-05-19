@@ -57,10 +57,10 @@ class Master
     $stderr = File.new "#{LOG_PATH}#{@name}.error.log", 'w'
   end
 
-  def trap_signals
-    Signal.trap "USR1" do
-      p Process.pid
-    end
-  end
+  #def trap_signals
+  #  Signal.trap "USR1" do
+  #    p Process.pid
+  #  end
+  #end
 
 end
